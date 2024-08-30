@@ -7,7 +7,7 @@
             "metadata": {
                 "description": "Enter the location where resource group should be deployed."
             },
-            "defaultValue": "india"
+            "defaultValue": "centralindia"
         },
         "resourceGroupName": {
             "type": "string",
