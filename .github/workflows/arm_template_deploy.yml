@@ -27,9 +27,20 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       # Deploy resource group
+      # # using az cli
+      # - name: Deploy resource group
+      #   uses: Azure/cli@v2.0.0
+      #   # deploy resource group at subscription level
+      #   with:
+      #     inlinescript: |
+      #       az deployment sub create --location "centralindia" --template-file ./arm-templates/resource-group.json
+      # using GHA: Deploy ARM Template
       - name: Deploy resource group
-        uses: Azure/cli@v2.0.0
-        # deploy resource group at subscription level
+        uses: Azure/arm-deploy@v2
         with:
-          inlinescript: |
-            az deployment sub create --location "centralindia" --template-file ./arm-templates/resource-group.json
+          scope: subscription
+          subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+          region: centralindia
+          template: ./arm-templates/resource-group.json
+          deploymentName: rg-github-actions-deployment
+  
