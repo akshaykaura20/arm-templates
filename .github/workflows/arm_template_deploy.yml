@@ -29,6 +29,7 @@ jobs:
       # Deploy resource group
       - name: Deploy resource group
         uses: Azure/cli@v2.0.0
+        # deploy resource group at subscription level
         with:
           inlinescript: |
-            az deployment sub --location "india" --template ./arm-templates/resource-group.json
+            az deployment sub create --location "india" --template ./arm-templates/resource-group.json
