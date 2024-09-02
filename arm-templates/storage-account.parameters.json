@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccount": {
-            "value": "storagegithubactions"
+            "value": "storageaccgithubactions"
         },
         "location": {
             "value": "centralindia"
