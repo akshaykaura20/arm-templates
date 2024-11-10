@@ -9,9 +9,12 @@ on:
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# WJSA (Workflow > Job > Steps > Actions)
 jobs:
-  # This workflow contains a single job called "armDeploy"
+  # This workflow contains a single job called "armDeploy" which is also the job's ID
   armDeploy:
+    # The job's name
+    name: Deploy to Dev
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -47,11 +50,15 @@ jobs:
       # Deploy a storage account using parameter file
       - name: Deploy storage account
         uses: Azure/arm-deploy@v2
+        id: storageAccountDeploy
         with:
           scope: resourcegroup
           resourceGroupName: rg-github-actions
           subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
           template: ./arm-templates/storage-account.json
           parameters: ./arm-templates/storage-account.parameters.json
+            storageAccountName=storageaccgithubactions2
+            location="centralindia"
           deploymentMode: incremental
-  
+      
+      - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}

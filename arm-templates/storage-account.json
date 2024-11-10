@@ -39,5 +39,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "blobUri": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccount'))).primaryEndpoints.blob]"
+        }
+    }
 }
