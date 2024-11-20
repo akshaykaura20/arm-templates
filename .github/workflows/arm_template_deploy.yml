@@ -76,5 +76,5 @@ jobs:
             adminSecret=${{ secrets.UBUNTU_VM_ADMIN_PASSWORD }}
             adminUsername="vm-admin-user"
             location="centralindia"
-            vmSize
+            vmSize="Standard_B1s"
           deploymentMode: incremental
