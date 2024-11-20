@@ -31,6 +31,8 @@
     "variables": {
         "vmName": "vm-ubuntu",
         "vNetName": "vm-vnet",
+        "vNetAddressPrefixes": "10.0.0.0/16",
+        "vNetSubnetAddressPrefix": "10.0.1.0/24",
         "networkSecurityGroupName": "vm-nw-sec-group",
         "networkSecurityGroupName2": "vm-subnet-nw-sec-group",
         "vNetSubnetName": "vm-vsubnet",
@@ -106,16 +108,16 @@
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName2'))]"
             ],
             "properties": {
-                /// "addressSpace": {
-                //     "addressPrefixes": [
-                //         "[variables('vNetAddressPrefixes')]"
-                //     ]
-                // },
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('vNetAddressPrefixes')]"
+                    ]
+                },
                 "subnets": [
                     {
                         "name": "[variables('vNetSubnetName')]",
                         "properties": {
-                            /// "addressPrefix": "[variables('vNetSubnetAddressPrefix')]",
+                            "addressPrefix": "[variables('vNetSubnetAddressPrefix')]",
                             "networkSecurityGroup": {
                                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName2'))]"
                             }
