@@ -3,9 +3,9 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminSecret": {
-            "type": "securestring",
+            "type": "string",
             "metadata": {
-                "description": "Enter the Access Secret for the VM"
+                "description": "Enter the SSH Public key for the VM"
             }
         },
         "adminUsername": {
