@@ -37,7 +37,8 @@ jobs:
       #   with:
       #     inlinescript: |
       #       az deployment sub create --location "centralindia" --template-file ./arm-templates/resource-group.json
-      # using GHA: Deploy ARM Template
+      
+      # Deploy a resource group using its ARM Template
       - name: Deploy resource group
         uses: Azure/arm-deploy@v2
         with:
@@ -47,7 +48,7 @@ jobs:
           template: ./arm-templates/resource-group.json
           deploymentName: rg-github-actions-deployment
       
-      # Deploy a storage account using parameter file
+      # Deploy a storage account using parameter file and its ARM Template
       - name: Deploy storage account
         uses: Azure/arm-deploy@v2
         id: storageAccountDeploy
@@ -61,4 +62,19 @@ jobs:
             location="centralindia"
           deploymentMode: incremental
       
-      - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}
+      # - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}
+
+      # Deploy a virtual machine using its ARM Template
+      - name: Deploy virtual machine
+        uses: Azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          resourceGroupName: rg-github-actions
+          subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+          template: ./arm-templates/virtual-machine.json
+          parameters:
+            adminSecret=${{ secrets.UBUNTU_VM_ADMIN_PASSWORD }}
+            adminUsername="vm-admin-user"
+            location="centralindia"
+            vmSize
+          deploymentMode: incremental
