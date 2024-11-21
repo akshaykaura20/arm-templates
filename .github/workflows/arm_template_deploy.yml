@@ -73,7 +73,7 @@ jobs:
           subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
           template: ./arm-templates/virtual-machine.json
           parameters:
-            adminSecret=${{ secrets.UBUNTU_VM_ADMIN_PASSWORD }}
+            adminSecret="${{ secrets.UBUNTU_VM_ADMIN_PASSWORD }}"
             adminUsername="vm-admin-user"
             location="centralindia"
             vmSize="Standard_B1s"
