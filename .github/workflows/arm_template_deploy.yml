@@ -8,6 +8,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  resource_group_name: rg-github-actions
+  location: centralindia
+  subscription_id: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 # WJSA (Workflow > Job > Steps > Actions)
 jobs:
@@ -27,7 +32,7 @@ jobs:
       - name: Azure Login
         uses: Azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: "${{ secrets.AZURE_CREDENTIALS }}"
       
       # Deploy resource group
       # # using az cli
@@ -43,10 +48,10 @@ jobs:
         uses: Azure/arm-deploy@v2
         with:
           scope: subscription
-          subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+          subscriptionId: "${{ env.subscription_id }}"
           region: centralindia
           template: ./arm-templates/resource-group.json
-          deploymentName: rg-github-actions-deployment
+          deploymentName: "${{ env.resource_group_name }}-deployment"
       
       # Deploy a storage account using parameter file and its ARM Template
       - name: Deploy storage account
@@ -54,12 +59,12 @@ jobs:
         id: storageAccountDeploy
         with:
           scope: resourcegroup
-          resourceGroupName: rg-github-actions
-          subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+          resourceGroupName: "${{ env.resource_group_name }}"
+          subscriptionId: "${{ env.subscription_id }}"
           template: ./arm-templates/storage-account.json
           parameters: ./arm-templates/storage-account.parameters.json
             storageAccount=storageaccgithubactions3
-            location="centralindia"
+            location="${{ env.location }}"
           deploymentMode: incremental
       
       # - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}
@@ -69,12 +74,12 @@ jobs:
         uses: Azure/arm-deploy@v2
         with:
           scope: resourcegroup
-          resourceGroupName: rg-github-actions
-          subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+          resourceGroupName: "${{ env.resource_group_name }}"
+          subscriptionId: "${{ env.subscription_id }}"
           template: ./arm-templates/virtual-machine.json
           parameters:
             adminSecret="${{ secrets.UBUNTU_VM_ADMIN_PASSWORD }}"
             adminUsername="vm-admin-user"
-            location="centralindia"
+            location="${{ env.location }}"
             vmSize="Standard_B1s"
           deploymentMode: incremental
