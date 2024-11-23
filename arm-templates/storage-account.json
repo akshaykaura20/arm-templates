@@ -39,6 +39,12 @@
             }
         }
     ],
+    // value we need to send out is the blobUri. how do we send that?
+    // reference() fn takes a resourceId as param and we get to reference properties of the resource. 
+    // now the property we need is: primaryEndpoints.blob…
+    // but how do we get the resourceId of storage account?
+    // resourceId () fn takes two parameters (resource type, resource name) and then 
+    // we feed its return value as parameter to the reference() fn
     "outputs": {
         "blobUri": {
             "type": "string",

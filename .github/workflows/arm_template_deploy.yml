@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - staging
+      - production
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -28,7 +29,7 @@ jobs:
     environment: staging
     # define env variables scoped to `staging` env
     env:
-      resource_group_name: rg-github-actions
+      resource_group_name: rg-stg-github-actions
       location: centralindia
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -71,7 +72,82 @@ jobs:
           subscriptionId: "${{ env.subscription_id }}"
           template: ./arm-templates/storage-account.json
           parameters: ./arm-templates/storage-account.parameters.json
-            storageAccount=storageaccgithubactions3
+            storageAccount="stgstorageaccgithubactions"
+            location="${{ env.location }}"
+          deploymentMode: incremental
+      
+      # - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}
+
+      # Deploy a virtual machine using its ARM Template
+      - name: Deploy virtual machine
+        uses: Azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          resourceGroupName: "${{ env.resource_group_name }}"
+          subscriptionId: "${{ env.subscription_id }}"
+          template: ./arm-templates/virtual-machine.json
+          parameters:
+            adminSecret="${{ secrets.UBUNTU_VM_ADMIN_PASSWORD }}"
+            adminUsername="vm-admin-user"
+            location="${{ env.location }}"
+            vmSize="Standard_B1s"
+          deploymentMode: incremental
+  
+  armDeployProduction:
+    # The job's name
+    name: Deploy to Production
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # the env on github it uses- this sets its protection rules, secrets to use etc.
+    environment: production
+    # define env variables scoped to `staging` env
+    env:
+      resource_group_name: rg-prod-github-actions
+      location: southindia
+    # this job depends on another job to complete first
+    needs: armDeployStaging
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Check-out repository under $GITHUB_WORKSPACE, so job can access it
+      - uses: actions/checkout@v4
+      
+      # Login to azure
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: "${{ secrets.AZURE_CREDENTIALS }}"
+      
+      # Deploy resource group
+      # # using az cli
+      # - name: Deploy resource group
+      #   uses: Azure/cli@v2.0.0
+      #   # deploy resource group at subscription level
+      #   with:
+      #     inlinescript: |
+      #       az deployment sub create --location "centralindia" --template-file ./arm-templates/resource-group.json
+      
+      # Deploy a resource group using its ARM Template
+      - name: Deploy resource group
+        uses: Azure/arm-deploy@v2
+        with:
+          scope: subscription
+          subscriptionId: "${{ env.subscription_id }}"
+          region: centralindia
+          template: ./arm-templates/resource-group.json
+          deploymentName: "${{ env.resource_group_name }}-deployment"
+      
+      # Deploy a storage account using parameter file and its ARM Template
+      - name: Deploy storage account
+        uses: Azure/arm-deploy@v2
+        id: storageAccountDeploy
+        with:
+          scope: resourcegroup
+          resourceGroupName: "${{ env.resource_group_name }}"
+          subscriptionId: "${{ env.subscription_id }}"
+          template: ./arm-templates/storage-account.json
+          parameters: ./arm-templates/storage-account.parameters.json
+            storageAccount="prodstorageaccgithubactions"
             location="${{ env.location }}"
           deploymentMode: incremental
       
