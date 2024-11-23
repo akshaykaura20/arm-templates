@@ -1,3 +1,4 @@
+# workflow name
 name: armTemplateDeployment
 
 # Controls when the workflow will run
@@ -8,20 +9,26 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# workflow level env variables
 env:
-  resource_group_name: rg-github-actions
-  location: centralindia
   subscription_id: ddbf15c7-d32d-4636-b6a0-ca68b29db300
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 # WJSA (Workflow > Job > Steps > Actions)
 jobs:
-  # This workflow contains a single job called "armDeploy" which is also the job's ID
-  armDeploy:
+  # This workflow contains two jobs
+  # this is also the job's ID
+  armDeployStaging:
     # The job's name
-    name: Deploy to Dev
+    name: Deploy to Staging
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # the env on github it uses- this sets its protection rules, secrets to use etc.
+    environment: staging
+    # define env variables scoped to `staging` env
+    env:
+      resource_group_name: rg-github-actions
+      location: centralindia
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
