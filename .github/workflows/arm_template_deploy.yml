@@ -31,7 +31,7 @@ jobs:
     env:
       resource_group_name: rg-stg-github-actions
       location: centralindia
-      storage_account_name: "stgstorageaccgithubactions"
+      storage_account_name: "stgstorageacc"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -108,7 +108,7 @@ jobs:
     env:
       resource_group_name: rg-prod-github-actions
       location: southindia
-      storage_account_name: "prodstorageaccgithubactions"
+      storage_account_name: "prodstorageacc"
     # this job depends on another job to complete first
     needs: armDeployStaging
 
