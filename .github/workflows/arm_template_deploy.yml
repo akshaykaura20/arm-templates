@@ -59,6 +59,7 @@ jobs:
         with:
           scope: subscription
           subscriptionId: "${{ env.subscription_id }}"
+          region: ${{ env.location }}
           template: ./arm-templates/resource-group.json
           parameters:
             location="${{ env.location }}"
@@ -137,6 +138,7 @@ jobs:
         with:
           scope: subscription
           subscriptionId: "${{ env.subscription_id }}"
+          region: ${{ env.location }}
           template: ./arm-templates/resource-group.json
           parameters:
             location="${{ env.location }}"
