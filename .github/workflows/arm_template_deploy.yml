@@ -31,6 +31,7 @@ jobs:
     env:
       resource_group_name: rg-stg-github-actions
       location: centralindia
+      storage_account_name: "stgstorageaccgithubactions"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -58,8 +59,10 @@ jobs:
         with:
           scope: subscription
           subscriptionId: "${{ env.subscription_id }}"
-          region: centralindia
           template: ./arm-templates/resource-group.json
+          parameters:
+            location="${{ env.location }}"
+            resourceGroupName="${{ env.resource_group_name }}"
           deploymentName: "${{ env.resource_group_name }}-deployment"
       
       # Deploy a storage account using parameter file and its ARM Template
@@ -72,7 +75,7 @@ jobs:
           subscriptionId: "${{ env.subscription_id }}"
           template: ./arm-templates/storage-account.json
           parameters: ./arm-templates/storage-account.parameters.json
-            storageAccount="stgstorageaccgithubactions"
+            storageAccount="${{ env.storage_account_name }}"
             location="${{ env.location }}"
           deploymentMode: incremental
       
@@ -104,6 +107,7 @@ jobs:
     env:
       resource_group_name: rg-prod-github-actions
       location: southindia
+      storage_account_name: "prodstorageaccgithubactions"
     # this job depends on another job to complete first
     needs: armDeployStaging
 
@@ -133,8 +137,10 @@ jobs:
         with:
           scope: subscription
           subscriptionId: "${{ env.subscription_id }}"
-          region: centralindia
           template: ./arm-templates/resource-group.json
+          parameters:
+            location="${{ env.location }}"
+            resourceGroupName="${{ env.resource_group_name }}"
           deploymentName: "${{ env.resource_group_name }}-deployment"
       
       # Deploy a storage account using parameter file and its ARM Template
@@ -147,7 +153,7 @@ jobs:
           subscriptionId: "${{ env.subscription_id }}"
           template: ./arm-templates/storage-account.json
           parameters: ./arm-templates/storage-account.parameters.json
-            storageAccount="prodstorageaccgithubactions"
+            storageAccount="${{ env.storage_account_name }}"
             location="${{ env.location }}"
           deploymentMode: incremental
       
