@@ -13,8 +13,8 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
-            resource_group_name: rg-prod-bicep-github-actions
-            location: centralindia
+            resource_group_name: "rg-prod-bicep-github-actions"
+            location: "centralindia"
             vNetPrefix: "bicepdeploy"
             # storage_account_name: "prodbicepstrgacc"
 
