@@ -39,12 +39,8 @@ jobs:
                 template-file: ./bicep-templates/resource-group.bicep
                 parameters: |
                     {
-                        "resourceGroupName": {
-                        "value": "${{ env.resource_group_name }}"
-                        },
-                        "location": {
-                        "value": "${{ env.location }}"
-                        }
+                        "resourceGroupName": "${{ env.resource_group_name }}",
+                        "location": "${{ env.location }}"
                     }
 
             - name: "Deploy Virtual Net"
@@ -60,12 +56,8 @@ jobs:
                 template-file: ./bicep-templates/virtual-network.bicep
                 parameters: |
                     {
-                        "resourceGroupName": {
-                        "value": "${{ env.resource_group_name }}"
-                        },
-                        "location": {
-                        "value": "${{ env.location }}"
-                        }
+                        "resourceGroupName": "${{ env.resource_group_name }}",
+                        "location": "${{ env.location }}"
                     }
             
 
