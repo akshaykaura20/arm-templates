@@ -46,7 +46,7 @@ jobs:
             - name: "Deploy Virtual Net"
               uses: azure/bicep-deploy@v1
               with:
-                scope: resourcegroup
+                scope: resourceGroup
                 resource-group-name: "${{ env.resource_group_name}}"
                 subscription-id: "${{ env.subscription_id }}"
                 type: deployment
