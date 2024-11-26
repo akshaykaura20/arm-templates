@@ -38,7 +38,7 @@ jobs:
                 location: "${{ env.location }}"       
                 template-file: ./bicep-templates/resource-group.bicep
                 parameters: |
-                    resouceGroupName="${{ env.resource_group_name }}"
+                    resourceGroupName="${{ env.resource_group_name }}"
                     location="${{ env.location }}"
 
             - name: "Deploy Virtual Net"
