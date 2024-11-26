@@ -51,8 +51,7 @@ jobs:
                 subscription-id: "${{ env.subscription_id }}"
                 type: deployment
                 operation: create
-                name: "${{ env.resource_group_name }}-deployment"
-                location: "${{ env.location }}"       
+                name: "${{ env.resource_group_name }}-deployment"      
                 template-file: ./bicep-templates/virtual-network.bicep
                 parameters: |
                     {
