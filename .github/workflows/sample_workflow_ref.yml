@@ -1,0 +1,45 @@
+# This file is located in the `.github/workflows` directory
+# Name of the workflow
+name: Workflow Name
+
+# Events that trigger the workflow
+on:
+  push:
+    branches:
+      - main-branch-example
+  pull_request:
+    branches:
+      - main-branch-example
+
+# Define jobs to run
+jobs:
+  # Job identifier (used internally)
+  job_name:
+    # Name of the job
+    name: Job Name
+    # Type of machine to run on
+    runs-on: ubuntu-latest
+
+    # Define environment variables scoped to this job
+    env:
+      EXAMPLE_VAR: example_value
+
+    # Steps to execute within the job
+    steps:
+      # Checkout the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Example of running a shell command
+      - name: Run a shell command
+        run: echo "Hello, World!"
+
+      # Example of using an action
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Example of using a script with environment variable
+      - name: Use environment variable
+        run: echo "The variable is $EXAMPLE_VAR"

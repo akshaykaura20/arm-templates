@@ -1,0 +1,59 @@
+name: "Bicep Deploy Workflow"
+
+on:
+    push:
+        branches:
+            - production
+env:
+    subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+
+jobs:
+    bicepDeployWithPrebuiltAction:
+        name: "Deploy bicep template using pre-built action"
+        runs-on: ubuntu-latest
+
+        env:
+            resource_group_name: rg-prod-bicep-github-actions
+            location: centralindia
+            vNetPrefix: "bicepdeploy"
+            # storage_account_name: "prodbicepstrgacc"
+
+        steps:
+            - name: "Checkout"
+              uses: actions/checkout@v2
+
+            - name: "Login to Azure"
+              uses: Azure/login@v1
+              with:
+                creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - name: "Deploy Resource Group"
+              uses: azure/bicep-deploy@v1
+              with:
+                scope: subscription
+                subscription-id: "${{ env.subscription_id }}"
+                type: deployment
+                operation: create
+                name: "${{ env.resource_group_name }}-deployment"
+                location: "${{ env.location }}"       
+                template-file: ./bicep-templates/resource-group.bicep
+                parameters:
+                    resouceGroupName="${{ env.resource_group_name }}"
+                    location="${{ env.location }}"
+
+            - name: "Deploy Virtual Net"
+              uses: azure/bicep-deploy@v1
+              with:
+                scope: resourcegroup
+                resource-group-name: "${{ env.resource_group_name}}"
+                subscription-id: "${{ env.subscription_id }}"
+                type: deployment
+                operation: create
+                name: "${{ env.resource_group_name }}-deployment"
+                location: "${{ env.location }}"       
+                template-file: ./bicep-templates/virtual-network.bicep
+                parameters:
+                    vNetPrefix="${{ env.resource_group_name }}"
+                    location="${{ env.location }}"
+            
+
