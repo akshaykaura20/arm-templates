@@ -52,7 +52,6 @@ jobs:
                 type: deployment
                 operation: create
                 name: "${{ env.vNetPrefix }}-deployment"
-                location: "${{ env.location }}"
                 template-file: ./bicep-templates/virtual-network.bicep
                 parameters: |
                     {
