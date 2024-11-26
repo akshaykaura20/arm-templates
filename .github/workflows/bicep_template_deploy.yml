@@ -37,7 +37,7 @@ jobs:
                 name: "${{ env.resource_group_name }}-deployment"
                 location: "${{ env.location }}"       
                 template-file: ./bicep-templates/resource-group.bicep
-                parameters:
+                parameters: |
                     resouceGroupName="${{ env.resource_group_name }}"
                     location="${{ env.location }}"
 
@@ -52,7 +52,7 @@ jobs:
                 name: "${{ env.resource_group_name }}-deployment"
                 location: "${{ env.location }}"       
                 template-file: ./bicep-templates/virtual-network.bicep
-                parameters:
+                parameters: |
                     vNetPrefix="${{ env.resource_group_name }}"
                     location="${{ env.location }}"
             
