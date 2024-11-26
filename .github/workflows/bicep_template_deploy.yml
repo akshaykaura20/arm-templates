@@ -5,7 +5,7 @@ on:
         branches:
             - production
 env:
-    subscriptionId: ddbf15c7-d32d-4636-b6a0-ca68b29db300
+    subscription_id: ddbf15c7-d32d-4636-b6a0-ca68b29db300
 
 jobs:
     bicepDeployWithPrebuiltAction:
